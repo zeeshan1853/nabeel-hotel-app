@@ -43,6 +43,7 @@ AppAsset::register($this);
     } else {
         $menuItems[] = ['label' => 'Categories', 'url' => ['/category']];
         $menuItems[] = ['label' => 'Hotels', 'url' => ['/hotel']];
+        $menuItems[] = ['label' => 'Ad', 'url' => ['/ad']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -69,10 +70,8 @@ AppAsset::register($this);
 </div>
 
 <footer class="footer">
-    <div class="container">
+    <div class="container-fluid">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 

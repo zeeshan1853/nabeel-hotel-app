@@ -11,16 +11,25 @@ use yii\widgets\ActiveForm;
 /* @var $model Hotel */
 /* @var $form ActiveForm */
 ?>
-
+<style>
+    #hotel-img{
+        display: none;
+    }
+    .labelfile{
+        font-size: -webkit-xxx-large
+    }
+</style>
 <div class="hotel-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?php $listCategory=ArrayHelper::map(Category::find()->all(),'id','name'); ?>
-    
+    <?= $form->field($model, 'img')->fileInput()->label('', ['class' => 'labelfile glyphicon glyphicon-upload']) ?>
+
+    <?php $listCategory = ArrayHelper::map(Category::find()->all(), 'id', 'name'); ?>
+
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'category_id')->dropDownList($listCategory,['prompt'=>'Select category']) ?>
+    <?= $form->field($model, 'category_id')->dropDownList($listCategory, ['prompt' => 'Select category']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

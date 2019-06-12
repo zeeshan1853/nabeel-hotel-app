@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Hotel */
+/* @var $model common\models\Ad */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Hotels', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Ads', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="hotel-view">
+<div class="ad-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -32,12 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
     DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'name',
-                [
-                'attribute' => 'category',
-                'value' => $model->category->name,
-            ],
+            'lat',
+            'lng',
                 [
                 'attribute' => 'img',
                 'format' => 'html',

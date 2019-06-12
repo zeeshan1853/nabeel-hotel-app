@@ -4,28 +4,28 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Hotel;
+use common\models\Ad;
 
 /**
- * HotelSearch represents the model behind the search form of `common\models\Hotel`.
+ * AdSearch represents the model behind the search form of `common\models\Ad`.
  */
-class HotelSearch extends Hotel {
-
+class AdSearch extends Ad
+{
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-                [['id', 'category_id', 'created_at'], 'integer'],
-                [['img'], 'safe'],
-                [['name', 'update_at'], 'safe'],
+            [['id', 'lat', 'lng', 'status'], 'integer'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -37,8 +37,9 @@ class HotelSearch extends Hotel {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
-        $query = Hotel::find();
+    public function search($params)
+    {
+        $query = Ad::find();
 
         // add conditions that should always apply here
 
@@ -57,14 +58,12 @@ class HotelSearch extends Hotel {
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'created_at' => $this->created_at,
-            'update_at' => $this->update_at,
+            'img' => $this->img,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+            'status' => $this->status,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
-
 }

@@ -35,7 +35,7 @@ class Hotel extends ActiveRecord
             [['name', 'category_id'], 'required'],
             [['category_id', 'created_at'], 'integer'],
             [['update_at'], 'safe'],
-            [['name'], 'string', 'max' => 100],
+            [['name','img'], 'string', 'max' => 100],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }

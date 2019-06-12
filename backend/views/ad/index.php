@@ -5,20 +5,20 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\HotelSearch */
+/* @var $searchModel backend\models\AdSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Hotels';
+$this->title = 'Ads';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="hotel-index">
+<div class="a-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+<?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a('Create Hotel', ['create'], ['class' => 'btn btn-success']) ?>
+<?= Html::a('Create Ad', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?=
@@ -27,13 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'name',
-                [
-                'attribute' => 'category_id',
-                'label' => 'Category',
-                'value' => 'category.name'
-            ],
+//            'img',
+            'lat',
+            'lng',
                 [
                 'attribute' => 'img',
                 'format' => 'html',
@@ -46,5 +42,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
     ?>
-    <?php Pjax::end(); ?>
+<?php Pjax::end(); ?>
 </div>

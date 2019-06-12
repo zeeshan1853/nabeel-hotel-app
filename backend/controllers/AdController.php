@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use backend\models\HotelSearch;
-use common\models\Hotel;
+use backend\models\AdSearch;
+use common\models\Ad;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -11,9 +11,9 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
- * HotelController implements the CRUD actions for Hotel model.
+ * AdController implements the CRUD actions for Ad model.
  */
-class HotelController extends Controller {
+class AdController extends Controller {
 
     /**
      * {@inheritdoc}
@@ -30,11 +30,11 @@ class HotelController extends Controller {
     }
 
     /**
-     * Lists all Hotel models.
+     * Lists all Ad models.
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new HotelSearch();
+        $searchModel = new AdSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -44,7 +44,7 @@ class HotelController extends Controller {
     }
 
     /**
-     * Displays a single Hotel model.
+     * Displays a single Ad model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -56,24 +56,24 @@ class HotelController extends Controller {
     }
 
     /**
-     * Creates a new Hotel model.
+     * Creates a new Ad model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Hotel();
-
+        $model = new Ad();
+        $model->scenario = 'create';
         $nameOfImage = '';
-        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
-
-            if ($imageFile = UploadedFile::getInstance($model, 'img')) {
-                $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
-                $imageFile->saveAs('uploads/' . $nameOfImage);
-                $model->img = $nameOfImage;
-            }
+        if (Yii::$app->request->isPost) {
+            $imageFile = UploadedFile::getInstance($model, 'img');
+            $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
+            $imageFile->saveAs('uploads/' . $nameOfImage);
         }
-        if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->img = $nameOfImage;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -82,7 +82,7 @@ class HotelController extends Controller {
     }
 
     /**
-     * Updates an existing Hotel model.
+     * Updates an existing Ad model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -91,6 +91,7 @@ class HotelController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
+
             if ($model->load(Yii::$app->request->post())) {
                 $imageFile = UploadedFile::getInstance($model, 'img');
                 if ($imageFile) {
@@ -104,17 +105,13 @@ class HotelController extends Controller {
             }
         }
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        }
-
         return $this->render('update', [
                     'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing Hotel model.
+     * Deletes an existing Ad model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -127,14 +124,14 @@ class HotelController extends Controller {
     }
 
     /**
-     * Finds the Hotel model based on its primary key value.
+     * Finds the Ad model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Hotel the loaded model
+     * @return Ad the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Hotel::findOne($id)) !== null) {
+        if (($model = Ad::findOne($id)) !== null) {
             return $model;
         }
 
