@@ -24,10 +24,20 @@ class UserController extends CController {
     }
 
     public function actionLogin() {
+
+        $required_params = ['email', 'password'];
         $request = Yii::$app->request->post();
+
+        $this->checkRequiredParams($required_params, $request);
+
         $model = new LoginForm();
         $model->load($request, '');
-        return $model;
+
+        if (!$model->login()) {
+            $this->invalidLogin();
+        }
+        $this->setMessage('Logged in successfully');
+        return User::findOne(\Yii::$app->user->identity->id);
     }
 
     public function actionRegister() {
@@ -40,15 +50,13 @@ class UserController extends CController {
         $user = new User();
         $user->email = $request['email'];
         $user->generateAuthKey();
-        $user->generateAccessToken();
         $user->setPassword($request['password']);
 
         if ($user->save()) {
             $this->setMessage('User created successfully');
             return $user;
         }
-        $this->setMessage('Unable to register user.');
-        return FALSE;
+        return $user;
     }
 
     public function actionForgetPassword() {

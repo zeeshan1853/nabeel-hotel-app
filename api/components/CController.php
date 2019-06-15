@@ -27,6 +27,9 @@ class CController extends Controller {
                 'user/login',
                 'user/register',
                 'user/forget-password',
+                'hotel/test',
+                'hotel/index',
+                'hotel/detail',
             ],
         ];
         return $behaviors;
@@ -79,12 +82,18 @@ class CController extends Controller {
     protected function paramMissing($param = null) {
         throw new ApiException('Required param missing ' . $param, 460);
     }
+    
 
     /**
      * @throws UnauthorizedHttpException
      */
     protected function unauthorizedAccess() {
         throw new UnauthorizedHttpException('Your request was made with invalid credentials.');
+    }
+    
+    protected function invalidLogin()
+    {
+        throw new ApiException('Invalid username/password supplied', 400);
     }
 
 }

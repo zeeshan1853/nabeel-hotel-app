@@ -3,6 +3,7 @@
 namespace api\common\models;
 
 use api\modules\v1\models\User;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -17,16 +18,13 @@ class LoginForm extends Model {
 
     public $email;
     public $password;
-    public $social_token;
-    public $device_token;
-    public $rememberMe;
+    private $_user;
+
+//    public $rememberMe;
 
     public function rules() {
         return [
                 [['email', 'password'], 'required'],
-                [['device_token', 'social_token'], 'safe'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
                 /**
@@ -35,6 +33,14 @@ class LoginForm extends Model {
 //                [['social_token'], 'required'],
 //                ['social_token', 'validateSocialMediaToken'],
         ];
+    }
+
+    public function login() {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getUser());
+        } else {
+            return false;
+        }
     }
 
     public function validatePassword($attribute, $params) {
@@ -47,11 +53,9 @@ class LoginForm extends Model {
     }
 
     protected function getUser() {
-        if ($this->scenario === self::SCENARIO_SOCIAL_MEDIA_LOGIN) {
-            $this->_user = User::findOne(['social_token' => $this->social_token]);
-        } else {
-            $this->_user = User::findByEmail($this->email);
-        }
+
+        $this->_user = User::findByEmail($this->email);
+
         return $this->_user;
     }
 

@@ -16,8 +16,16 @@ return [
             'POST login' => 'login',
             'GET forget-password' => 'forget-password',
             'GET forget' => 'forget',
-        ]
+        ],
     ],
-    
+        [
+        'class' => CUrlRule::class,
+        'controller' => 'v1/hotel',
+        'extraPatterns' => [
+            'GET list' => 'index',
+            'GET detail' => 'detail',
+            'GET test' => 'test',
+        ],
+    ],
 ];
 

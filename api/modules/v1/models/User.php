@@ -3,7 +3,7 @@
 namespace api\modules\v1\models;
 
 use yii\helpers\ArrayHelper;
-
+use api\helpers\Jwt;
 
 /**
  * Description of User
@@ -24,7 +24,11 @@ class User extends \common\models\User {
 
     public function fields() {
         return[
+            'id',
             'email',
+            'access_token' => function (self $model) {
+                return Jwt::getInstance()->token($model->id);
+            },
         ];
     }
 
