@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\HotelSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Hotels';
+$this->title = 'Restaurants';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="hotel-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a('Create Hotel', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Restaurant', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?=
@@ -41,6 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($data) {
                     return Html::img(yii\helpers\Url::base() . '/uploads/' . $data['img'], ['width' => '70px']);
                 },
+            ],
+            'city',
+            'lat',
+            'lng',
+                [
+                'attribute' => 'status',
+                'value' => 'statusString'
             ],
                 ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -16,35 +16,37 @@ use yii\db\ActiveRecord;
  *
  * @property Category $category
  */
-class Hotel extends ActiveRecord
-{
+class Hotel extends ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    const STATUS_IN_ACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+    public static function tableName() {
         return 'hotel';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['name', 'category_id'], 'required'],
-            [['category_id', 'created_at'], 'integer'],
-            [['update_at'], 'safe'],
-            [['name','img'], 'string', 'max' => 100],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+                [['name', 'category_id', 'lat', 'lng'], 'required'],
+                [['category_id', 'created_at', 'status'], 'integer'],
+                [['update_at'], 'safe'],
+                [['lat', 'lng', 'city'], 'string', 'max' => 50],
+                [['name'], 'string', 'max' => 100],
+                [['img'], 'required', 'on' => 'create'],
+                [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'Name',
@@ -57,8 +59,19 @@ class Hotel extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCategory()
-    {
+    public function getCategory() {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
+
+    public static function getStatusList() {
+        return [
+            static::STATUS_ACTIVE => 'Active',
+            static::STATUS_IN_ACTIVE => 'InActive'
+        ];
+    }
+
+    public function getStatusString() {
+        return $this->status == static::STATUS_ACTIVE ? "Active" : "In-active";
+    }
+
 }

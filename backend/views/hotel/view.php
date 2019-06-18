@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Hotel */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Hotels', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Restaurants', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -46,6 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img(yii\helpers\Url::base() . '/uploads/' . $data['img'], ['width' => '70px']);
                 },
             ],
+            'city',
+            'lat',
+            'lng',
         ],
     ])
     ?>

@@ -25,6 +25,7 @@ return [
             'GET list' => 'index',
             'GET detail' => 'detail',
             'GET test' => 'test',
+            'POST create' => 'create'
         ],
     ],
 ];

@@ -64,6 +64,7 @@ class HotelController extends Controller {
         $model = new Hotel();
 
         $nameOfImage = '';
+        $model->scenario = 'create';
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
             if ($imageFile = UploadedFile::getInstance($model, 'img')) {
@@ -73,7 +74,7 @@ class HotelController extends Controller {
             }
         }
         if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         }
 
         return $this->render('create', [
@@ -90,16 +91,18 @@ class HotelController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $img = $model->img;
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 $imageFile = UploadedFile::getInstance($model, 'img');
                 if ($imageFile) {
                     $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
                     $imageFile->saveAs('uploads/' . $nameOfImage);
-                    $model->img = $nameOfImage;
+                    $img = $nameOfImage;
                 }
+                $model->img = $img;
                 if ($model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect('index');
                 }
             }
         }

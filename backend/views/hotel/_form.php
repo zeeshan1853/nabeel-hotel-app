@@ -30,7 +30,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'category_id')->dropDownList($listCategory, ['prompt' => 'Select category']) ?>
+    
+    <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'lat')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'lng')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'status')->dropDownList(Hotel::getStatusList()) ?>
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

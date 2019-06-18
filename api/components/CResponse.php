@@ -42,8 +42,8 @@ class CResponse extends Response {
         }
         if ($data['status'] !== 200) {
             $data['message'] = $this->resolveErrorMsg($data['data']);
-            $data['data'] = (object) [];
-//            $data['data'] = $data['data'];
+//            $data['data'] = (object) [];
+            $data['data'] = $data['data'];
 
             $response->statusText = $data['message'];
         }
