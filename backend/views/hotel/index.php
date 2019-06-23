@@ -42,7 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img(yii\helpers\Url::base() . '/uploads/' . $data['img'], ['width' => '70px']);
                 },
             ],
-//            'city',
+            'website',
+            'fb_address',
+            'phone_no',
+            'contact_email',
             'lat',
             'lng',
                 [

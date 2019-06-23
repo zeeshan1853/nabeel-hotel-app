@@ -64,7 +64,7 @@ class HotelController extends Controller {
         $model = new Hotel();
 
         $nameOfImage = '';
-        $model->scenario = 'create';
+//        $model->scenario = 'create';
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
             if ($imageFile = UploadedFile::getInstance($model, 'img')) {
@@ -72,10 +72,11 @@ class HotelController extends Controller {
                 $imageFile->saveAs('uploads/' . $nameOfImage);
                 $model->img = $nameOfImage;
             }
+            if ($model->save()) {
+                return $this->redirect('index');
+            }
         }
-        if ($model->save()) {
-            return $this->redirect('index');
-        }
+
 
         return $this->render('create', [
                     'model' => $model,

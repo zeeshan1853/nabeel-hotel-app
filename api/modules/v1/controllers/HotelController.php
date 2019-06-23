@@ -39,20 +39,19 @@ class HotelController extends CController {
         $q->orderBy('distance');
         // echo $q->createCommand()->getRawSql();die();
         return $POSlist = $q->all();
-        return 'test';
     }
 
     public function actionIndex() {
-        $lon = 71.507051;
-        $lat = 30.117629;
+//        $lon = 71.507051;
+//        $lat = 30.117629;
         $miles = 1000;
         $search = empty(\Yii::$app->request->get('search')) ? "%" : \Yii::$app->request->get('search');
-//        $lat = \Yii::$app->request->get('lat');
-//        $lon = \Yii::$app->request->get('lng');
+        $lat = \Yii::$app->request->get('lat');
+        $lon = \Yii::$app->request->get('lng');
 
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
-                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.status,category.name as category, 
+                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,category.name as category, 
 ( 3959 * acos( cos( radians('$lat') ) * 
 cos( radians( lat ) ) * 
 cos( radians( lng ) - 
@@ -76,7 +75,7 @@ AS distance FROM hotel left join category on category_id = category.id WHERE (ca
 
         $required_params = ['name', 'category_id', 'lat', 'lng'];
         $request = Yii::$app->request->post();
-        
+
         $this->checkRequiredParams($required_params, $request);
 
         $model = new Hotel();
@@ -85,13 +84,13 @@ AS distance FROM hotel left join category on category_id = category.id WHERE (ca
         if (!(Yii::$app->request->isPost && $model->load(Yii::$app->request->post(), ''))) {
             $this->commonError('Invalid request');
         }
-        
+
         if ($imageFile = UploadedFile::getInstanceByName('img')) {
             $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
             $imageFile->saveAs('../backend/web/uploads/' . $nameOfImage);
             $model->img = $nameOfImage;
         }
-        
+
         if (!$model->validate()) {
             return $model;
         }

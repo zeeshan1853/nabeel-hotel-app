@@ -33,6 +33,14 @@ use yii\widgets\ActiveForm;
     
     <?php // $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
     
+    <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'fb_address')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'contact_email')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'phone_no')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'lat')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'lng')->textInput(['maxlength' => true]) ?>

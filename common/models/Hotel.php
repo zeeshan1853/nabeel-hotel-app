@@ -36,8 +36,10 @@ class Hotel extends ActiveRecord {
                 [['name', 'category_id', 'lat', 'lng'], 'required'],
                 [['category_id', 'created_at', 'status'], 'integer'],
                 [['update_at'], 'safe'],
-                [['lat', 'lng', 'city'], 'string', 'max' => 50],
-                [['name'], 'string', 'max' => 100],
+                [['contact_email'], 'email'],
+                [['lat', 'lng', 'city','phone_no'], 'string', 'max' => 50],
+                [['name','contact_email'], 'string', 'max' => 100],
+                [['website','fb_address'], 'string', 'max' => 200],
                 [['img'], 'required', 'on' => 'create'],
                 [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -50,6 +52,9 @@ class Hotel extends ActiveRecord {
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'fb_address' => 'FB',
+            'website' => 'website',
+            'phone_no' => 'Phone Number',
             'category_id' => 'Category ID',
             'created_at' => 'Created At',
             'update_at' => 'Update At',
