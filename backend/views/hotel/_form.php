@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'category_id')->dropDownList($listCategory, ['prompt' => 'Select category']) ?>
     
-    <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    <?php // $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'lat')->textInput(['maxlength' => true]) ?>
     
