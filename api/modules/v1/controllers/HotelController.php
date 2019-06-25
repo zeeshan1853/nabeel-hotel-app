@@ -100,4 +100,8 @@ AS distance FROM hotel left join category on category_id = category.id WHERE (ca
         return $model;
     }
 
+    public function actionCategories() {
+        return \api\modules\v1\models\Category::find()->all();
+    }
+
 }
