@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'label' => 'Image',
                 'value' => function ($data) {
-                    return Html::img(yii\helpers\Url::base() . '/uploads/' . $data['img'], ['width' => '70px']);
+                    return empty($data) ? '' : Html::img(yii\helpers\Url::base() . '/uploads/' . $data['img'], ['width' => '70px']);
                 },
             ],
             'website',

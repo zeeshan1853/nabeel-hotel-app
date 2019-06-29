@@ -21,7 +21,7 @@ use yii\web\UploadedFile;
 class HotelController extends CController {
 
     public function actionTest() {
-        $range = 1000; // km
+        $range = 10000; // km
         // earth's radius in km = ~6371
         $radius = 6371;
         $lng = 71.507051;
@@ -44,21 +44,24 @@ class HotelController extends CController {
     public function actionIndex() {
 //        $lon = 71.507051;
 //        $lat = 30.117629;
-        $miles = 1000;
-        $search = empty(\Yii::$app->request->get('search')) ? "%" : \Yii::$app->request->get('search');
+        $miles = 395855555.8;
+        $search = empty(\Yii::$app->request->get('search')) ? "%" : '%' . \Yii::$app->request->get('search') . '%';
+        $miles = empty(\Yii::$app->request->get('radius')) ? 395855555.8 : \Yii::$app->request->get('radius');
+        $miles = ($miles == 0 || $miles == '0') ? 395855555.8 : $miles;
         $lat = \Yii::$app->request->get('lat');
         $lon = \Yii::$app->request->get('lng');
-
+        $categoryCondition = empty(\Yii::$app->request->get('category')) ? '' : ' AND category.id = ' . \Yii::$app->request->get('category');
+        $statusCondition = 'AND hotel.status = 1';
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
-                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,category.name as category, 
+                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,category.name as category,category.id as category_id, 
 ( 3959 * acos( cos( radians('$lat') ) * 
 cos( radians( lat ) ) * 
 cos( radians( lng ) - 
 radians('$lon') ) + 
 sin( radians('$lat') ) * 
 sin( radians( lat ) ) ) ) 
-AS distance FROM hotel left join category on category_id = category.id WHERE (category.name LIKE '%$search%' OR hotel.name= '$search' OR hotel.city= '$search') AND hotel.status = 1 HAVING distance < '$miles'  ORDER BY distance ASC LIMIT 0, 5"
+AS distance FROM hotel left join category on category_id = category.id where hotel.name like '$search' $categoryCondition  $statusCondition HAVING distance < '$miles'  ORDER BY distance ASC"
                 . "");
         return $result = $command->queryAll();
     }
