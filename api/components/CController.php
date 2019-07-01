@@ -27,6 +27,7 @@ class CController extends Controller {
                 'user/login',
                 'user/register',
                 'user/forget-password',
+                'user/ishtehar',
                 'hotel/test',
                 'hotel/index',
                 'hotel/detail',

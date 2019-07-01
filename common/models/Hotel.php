@@ -35,7 +35,7 @@ class Hotel extends ActiveRecord {
         return [
                 [['name', 'category_id', 'lat', 'lng'], 'required'],
                 [['category_id', 'created_at', 'status'], 'integer'],
-                [['update_at'], 'safe'],
+                [['update_at','map_id'], 'safe'],
                 [['contact_email'], 'email'],
                 [['lat', 'lng', 'city','phone_no'], 'string', 'max' => 50],
                 [['name','contact_email'], 'string', 'max' => 100],

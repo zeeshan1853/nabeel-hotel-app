@@ -16,6 +16,7 @@ return [
             'POST login' => 'login',
             'GET forget-password' => 'forget-password',
             'GET forget' => 'forget',
+            'GET ishtehar' => 'ishtehar',
         ],
     ],
         [

@@ -83,4 +83,22 @@ class UserController extends CController {
         return [];
     }
 
+    public function actionIshtehar() {
+        $lat = \Yii::$app->request->get('lat');
+        $lon = \Yii::$app->request->get('lng');
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand(""
+                . "SELECT *, 
+( 3959 * acos( cos( radians('$lat') ) * 
+cos( radians( lat ) ) * 
+cos( radians( lng ) - 
+radians('$lon') ) + 
+sin( radians('$lat') ) * 
+sin( radians( lat ) ) ) ) 
+AS distance FROM ads ORDER BY distance ASC LIMIT 1"
+                . "");
+        return $result = $command->queryAll();
+    }
+
 }

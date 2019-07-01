@@ -54,7 +54,7 @@ class HotelController extends CController {
         $statusCondition = 'AND hotel.status = 1';
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
-                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,category.name as category,category.id as category_id, 
+                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,category.name as category,category.id as category_id, 
 ( 3959 * acos( cos( radians('$lat') ) * 
 cos( radians( lat ) ) * 
 cos( radians( lng ) - 
