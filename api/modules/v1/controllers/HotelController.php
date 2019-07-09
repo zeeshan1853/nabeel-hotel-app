@@ -50,19 +50,23 @@ class HotelController extends CController {
         $miles = ($miles == 0 || $miles == '0') ? 395855555.8 : $miles;
         $lat = \Yii::$app->request->get('lat');
         $lon = \Yii::$app->request->get('lng');
-        $categoryCondition = empty(\Yii::$app->request->get('category')) ? '' : ' AND category.id = ' . \Yii::$app->request->get('category');
+        
+        $categoryCondition = empty(\Yii::$app->request->get('category')) ? '' : ' AND hotel.category_id = ' . \Yii::$app->request->get('category');
         $statusCondition = 'AND hotel.status = 1';
+        $likeSearch = "hotel.name like '$search' OR hotel.city like '$search' ";
+        
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
-                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,category.name as category,category.id as category_id, 
+                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,hotel.city,hotel.street,category.name as category,category.id as category_id, 
 ( 3959 * acos( cos( radians('$lat') ) * 
 cos( radians( lat ) ) * 
 cos( radians( lng ) - 
 radians('$lon') ) + 
 sin( radians('$lat') ) * 
 sin( radians( lat ) ) ) ) 
-AS distance FROM hotel left join category on category_id = category.id where hotel.name like '$search' $categoryCondition  $statusCondition HAVING distance < '$miles'  ORDER BY distance ASC"
+AS distance FROM hotel left join category on category_id = category.id where ($likeSearch)  $categoryCondition  $statusCondition HAVING distance < '$miles'  ORDER BY distance ASC"
                 . "");
+//        return $command->getRawSql();
         return $result = $command->queryAll();
     }
 

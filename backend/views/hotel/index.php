@@ -48,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'contact_email',
             'lat',
             'lng',
+            'map_id',
                 [
                 'attribute' => 'status',
                 'value' => 'statusString'

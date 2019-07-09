@@ -96,7 +96,7 @@ class SiteController extends Controller {
 
     public function actionScript() {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $file = fopen("db.csv", "r");
+        $file = fopen("finalFile.csv", "r");
         $headerRow = array_map('trim', array_map('strtolower', fgetcsv($file))); //
         $companyAttributeMapArray = [
             'name' => 'name',
@@ -105,9 +105,12 @@ class SiteController extends Controller {
             'fb_address' => 'fb_address',
             'phone_no' => 'phone_no',
             'contact_email' => 'contact_email',
-            'street' => 'street',
+//            'street' => 'street',
             'city' => 'city',
-            'zip' => 'zip'
+            'zip' => 'zip',
+            'map_id' => 'map_id',
+            'lat' => 'lat',
+            'lng' => 'lng',
         ];
         if (empty($headerRow)) {
             echo 'empty';
@@ -130,29 +133,31 @@ class SiteController extends Controller {
                     }
                 }
                 $hotelModel->attributes = $companyAttributes;
-                if ($this->isHotelExist($hotelModel->name)) {
-                    continue;
-                }
-                echo '<pre>';
-                echo $hotelModel->name;
-                echo '</br>';
+//                if ($this->isHotelExist($hotelModel->name)) {
+//                    continue;
+//                }
+//                echo '<pre>';
+//                echo $hotelModel->name;
+//                echo '</br>';
 
                 $hotelModel->category_id = $this->getcategoryId($hotelModel->category_id);
 
-                $lat_lng_place = $this->getLatLng($companyAttributes['street'] . ' ' . $companyAttributes['city']);
-                $hotelModel->lat = (string) $lat_lng_place['lat'];
-                $hotelModel->lng = (string) $lat_lng_place['long'];
-                $hotelModel->map_id = (string) $lat_lng_place['map_id'];
+//                $lat_lng_place = $this->getLatLng($companyAttributes['street'] . ' ' . $companyAttributes['city']);
+//                $hotelModel->lat = (string) $lat_lng_place['lat'];
+//                $hotelModel->lng = (string) $lat_lng_place['long'];
+//                $hotelModel->map_id = (string) $lat_lng_place['map_id'];
 
                 if (!$hotelModel->validate()) {
                     echo '<pre>';
-                    print_r($lat_lng_place);
+//                    print_r($lat_lng_place);
                     print_r($hotelModel);
                     print_r($hotelModel->getErrors());
                     fclose($file);
                     return ['result' => FALSE, 'msg' => '<b>Following error occured at row ' . $rowNo . '</b> <br>' . $this->modelErrorsToString($hotelModel->getErrors()), 'row' => json_encode($dataRow)];
                 }
                 $hotelModel->save();
+                echo $rowNo;
+                echo '<br>';
             }
 //            if ($rowNo == 2) {
 //                return 'scripted completed';

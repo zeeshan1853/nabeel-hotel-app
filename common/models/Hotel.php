@@ -33,13 +33,15 @@ class Hotel extends ActiveRecord {
      */
     public function rules() {
         return [
-                [['name', 'category_id', 'lat', 'lng'], 'required'],
+                [['name', 'category_id'], 'required'],
                 [['category_id', 'created_at', 'status'], 'integer'],
-                [['update_at','map_id'], 'safe'],
-                [['contact_email'], 'email'],
-                [['lat', 'lng', 'city','phone_no'], 'string', 'max' => 50],
-                [['name','contact_email'], 'string', 'max' => 100],
-                [['website','fb_address'], 'string', 'max' => 200],
+                [['update_at', 'map_id'], 'safe'],
+                [['contact_email'], 'safe'],
+                [['video_hotel'], 'file', 'extensions' => 'mp4', 'maxSize' => '2048000'],
+                [['lat', 'lng', 'phone_no'], 'string', 'max' => 50],
+                [['name', 'contact_email'], 'string', 'max' => 100],
+                [['website', 'fb_address','video_string'], 'string', 'max' => 200],
+                [['street', 'city'], 'string', 'max' => 300],
                 [['img'], 'required', 'on' => 'create'],
                 [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];

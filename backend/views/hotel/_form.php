@@ -24,6 +24,9 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'img')->fileInput()->label('', ['class' => 'labelfile glyphicon glyphicon-upload']) ?>
+    
+    
+    <?= $form->field($model, 'video_hotel')->fileInput()->label('Upload video', ['class' => 'labelfile glyphicon glyphicon-upload']) ?>
 
     <?php $listCategory = ArrayHelper::map(Category::find()->all(), 'id', 'name'); ?>
 
@@ -44,6 +47,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'lat')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'lng')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'map_id')->textInput() ?>
 
     <?= $form->field($model, 'status')->dropDownList(Hotel::getStatusList()) ?>
     
