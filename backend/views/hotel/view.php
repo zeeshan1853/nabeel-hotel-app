@@ -52,6 +52,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'contact_email',
             'lat',
             'lng',
+                [
+                'attribute' => 'video_hotel',
+                'label' => 'video',
+            ]
         ],
     ])
     ?>

@@ -24,7 +24,7 @@ class HotelController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    [
+                        [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -106,12 +106,20 @@ class HotelController extends Controller {
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 $imageFile = UploadedFile::getInstance($model, 'img');
+                $videoFile = UploadedFile::getInstance($model, 'video_hotel');
                 if ($imageFile) {
                     $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
                     $imageFile->saveAs('uploads/' . $nameOfImage);
                     $img = $nameOfImage;
                 }
                 $model->img = $img;
+                $videoName = "video_" . rand() . '_';
+                if ($videoFile) {
+                    $videoFullName = $videoName . $videoFile->name ;
+                    if(!$videoFile->saveAs('uploads/videos/' . $videoFullName)){
+                    }
+                    $model->video_hotel = $videoFullName;
+                }
                 if ($model->save()) {
                     return $this->redirect('index');
                 }

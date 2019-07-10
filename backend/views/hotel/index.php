@@ -53,6 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => 'statusString'
             ],
+                [
+                'attribute' => 'video_hotel',
+                'label' => 'video',
+            ],
                 ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
