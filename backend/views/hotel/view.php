@@ -55,6 +55,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'video_hotel',
                 'label' => 'video',
+//                'value' => function($data) {
+//                    return "<video width = '320' height = '220' controls = ''>".
+//                    "<source src = '../uploads/videos/".$data['video_hotel']."' type = 'video/mp4'>".
+//                    "</video>";
+//                }
             ]
         ],
     ])

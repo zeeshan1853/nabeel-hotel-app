@@ -102,23 +102,36 @@ class HotelController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $old_video = $model->video_hotel;
         $img = $model->img;
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
+
                 $imageFile = UploadedFile::getInstance($model, 'img');
                 $videoFile = UploadedFile::getInstance($model, 'video_hotel');
                 if ($imageFile) {
                     $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
                     $imageFile->saveAs('uploads/' . $nameOfImage);
                     $img = $nameOfImage;
+                } else {
+                    if (empty($model->image_name)) {
+                        $img = NULL;
+                    }
                 }
                 $model->img = $img;
                 $videoName = "video_" . rand() . '_';
                 if ($videoFile) {
-                    $videoFullName = $videoName . $videoFile->name ;
-                    if(!$videoFile->saveAs('uploads/videos/' . $videoFullName)){
+                    $videoFullName = $videoName . $videoFile->name;
+                    if (!$videoFile->saveAs('uploads/videos/' . $videoFullName)) {
+                        
                     }
                     $model->video_hotel = $videoFullName;
+                } else {
+                    if (empty($model->video_string)) {
+                        $model->video_hotel = null;
+                    } else {
+                        $model->video_hotel = $old_video;
+                    }
                 }
                 if ($model->save()) {
                     return $this->redirect('index');
@@ -126,9 +139,6 @@ class HotelController extends Controller {
             }
         }
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        }
 
         return $this->render('update', [
                     'model' => $model,
