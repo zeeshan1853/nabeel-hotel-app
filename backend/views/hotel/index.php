@@ -46,6 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'fb_address',
             'phone_no',
             'contact_email',
+                [
+                'attribute' => 'city',
+                'label' => 'Address',
+            ],
             'lat',
             'lng',
             'map_id',

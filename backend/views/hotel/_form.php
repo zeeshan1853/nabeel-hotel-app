@@ -47,6 +47,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'category_id')->dropDownList($listCategory, ['prompt' => 'Select category']) ?>
 
+    <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'fb_address')->textInput(['maxlength' => true]) ?>

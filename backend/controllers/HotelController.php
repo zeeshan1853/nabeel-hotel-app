@@ -46,6 +46,7 @@ class HotelController extends Controller {
     public function actionIndex() {
         $searchModel = new HotelSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize=100;
 
         return $this->render('index', [
                     'searchModel' => $searchModel,

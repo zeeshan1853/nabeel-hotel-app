@@ -54,6 +54,7 @@ class Hotel extends ActiveRecord {
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'city' => 'Address',
             'fb_address' => 'FB',
             'website' => 'Website',
             'phone_no' => 'Phone Number',

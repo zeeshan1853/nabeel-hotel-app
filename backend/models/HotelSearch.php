@@ -17,7 +17,7 @@ class HotelSearch extends Hotel {
     public function rules() {
         return [
                 [['id', 'category_id', 'created_at'], 'integer'],
-//                [['img'], 'safe'],
+                [['city'], 'safe'],
                 [['website','fb_address','phone_no','contact_email'],'safe'],
                 [['name', 'update_at'], 'safe'],
         ];
@@ -64,7 +64,8 @@ class HotelSearch extends Hotel {
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'fb_address', $this->website]);
+        $query->andFilterWhere(['like', 'city', $this->city]);
+        $query->andFilterWhere(['like', 'website', $this->website]);
         $query->andFilterWhere(['like', 'fb_address', $this->fb_address]);
         $query->andFilterWhere(['like', 'phone_no', $this->phone_no]);
         $query->andFilterWhere(['like', 'contact_email', $this->contact_email]);
