@@ -27,7 +27,9 @@ return [
             'GET detail' => 'detail',
             'GET test' => 'test',
             'POST create' => 'create',
-            'GET categories' => 'categories'
+            'GET categories' => 'categories',
+            'GET liked-hotels' => 'liked-hotels',
+            'POST like-hotel' => 'like-hotel',
         ],
     ],
 ];

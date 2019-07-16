@@ -1,9 +1,8 @@
 <?php
 namespace common\models;
 
-use Yii;
 use api\helpers\Jwt;
-use yii\base\NotSupportedException;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -200,5 +199,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    
+    public function getHotelLikeds() {
+        return $this->hasMany(HotelLiked::className(), ['user_id' => 'id']);
     }
 }

@@ -50,11 +50,11 @@ class HotelController extends CController {
         $miles = ($miles == 0 || $miles == '0') ? 395855555.8 : $miles;
         $lat = \Yii::$app->request->get('lat');
         $lon = \Yii::$app->request->get('lng');
-        
+
         $categoryCondition = empty(\Yii::$app->request->get('category')) ? '' : ' AND hotel.category_id = ' . \Yii::$app->request->get('category');
         $statusCondition = 'AND hotel.status = 1';
         $likeSearch = "hotel.name like '$search' OR hotel.city like '$search' ";
-        
+
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
                 . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,hotel.city,hotel.street,hotel.video_hotel,category.name as category,category.id as category_id, 
@@ -109,6 +109,28 @@ AS distance FROM hotel left join category on category_id = category.id where ($l
 
     public function actionCategories() {
         return \api\modules\v1\models\Category::find()->all();
+    }
+
+    public function actionLikeHotel() {
+        $hotel_id = Yii::$app->request->post('hotel_id');
+        if (!Hotel::find()->where(['id' => $hotel_id])->count()) {
+            $this->commonError('Invalid hotel id');
+        }
+        $alreadyExist = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => Yii::$app->user->identity->id, 'hotel_id' => $hotel_id])->one();
+        if ($alreadyExist) {
+            $this->setMessage('UnLiked');
+            return $alreadyExist->delete() ? TRUE : FALSE;
+        }
+        $hotelLiked = new \api\modules\v1\models\HotelLiked();
+        $hotelLiked->user_id = Yii::$app->user->identity->id;
+        $hotelLiked->hotel_id = $hotel_id;
+        $this->setMessage('Liked');
+        return $hotelLiked->save();
+    }
+
+    public function actionLikedHotels() {
+        $hotelLiked = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+        return $hotelLiked;
     }
 
 }

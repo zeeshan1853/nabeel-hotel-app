@@ -35,9 +35,9 @@ class Hotel extends ActiveRecord {
         return [
                 [['name', 'category_id'], 'required'],
                 [['category_id', 'created_at', 'status'], 'integer'],
-                [['update_at', 'map_id','video_string','image_name','contact_email'], 'safe'],
+                [['update_at', 'map_id', 'video_string', 'image_name', 'contact_email'], 'safe'],
                 [['contact_email'], 'email'],
-                [['video_hotel'], 'file', 'extensions' => 'mp4', 'maxSize' => 1024*1024*10,'tooBig'=>'Limit is 10MB'],
+                [['video_hotel'], 'file', 'extensions' => 'mp4', 'maxSize' => 1024 * 1024 * 10, 'tooBig' => 'Limit is 10MB'],
                 [['lat', 'lng', 'phone_no'], 'string', 'max' => 50],
                 [['name', 'contact_email'], 'string', 'max' => 100],
                 [['website', 'fb_address'], 'string', 'max' => 200],
@@ -69,6 +69,10 @@ class Hotel extends ActiveRecord {
      */
     public function getCategory() {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    public function getHotelLikeds() {
+        return $this->hasMany(HotelLiked::className(), ['hotel_id' => 'id']);
     }
 
     public static function getStatusList() {
