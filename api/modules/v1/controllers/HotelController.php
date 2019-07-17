@@ -11,6 +11,7 @@ namespace api\modules\v1\controllers;
 use api\components\CController;
 use api\modules\v1\models\Hotel;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 
 /**
@@ -50,6 +51,7 @@ class HotelController extends CController {
         $miles = ($miles == 0 || $miles == '0') ? 395855555.8 : $miles;
         $lat = \Yii::$app->request->get('lat');
         $lon = \Yii::$app->request->get('lng');
+        $user_id = \Yii::$app->request->get('user_id');
 
         $categoryCondition = empty(\Yii::$app->request->get('category')) ? '' : ' AND hotel.category_id = ' . \Yii::$app->request->get('category');
         $statusCondition = 'AND hotel.status = 1';
@@ -57,17 +59,28 @@ class HotelController extends CController {
 
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand(""
-                . "SELECT hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,hotel.city,hotel.street,hotel.video_hotel,category.name as category,category.id as category_id, 
+                . "SELECT hotel.id,hotel.name,hotel.city,hotel.img,hotel.lat,hotel.lng,hotel.website,hotel.fb_address,hotel.phone_no,hotel.contact_email,hotel.status,hotel.map_id,hotel.city,hotel.street,hotel.video_hotel,category.name as category,category.id as category_id,hotel_liked.id as is_liked, 
 ( 3959 * acos( cos( radians('$lat') ) * 
 cos( radians( lat ) ) * 
 cos( radians( lng ) - 
 radians('$lon') ) + 
 sin( radians('$lat') ) * 
 sin( radians( lat ) ) ) ) 
-AS distance FROM hotel left join category on category_id = category.id where ($likeSearch)  $categoryCondition  $statusCondition HAVING distance < '$miles'  ORDER BY distance ASC"
+AS distance FROM hotel left join category on category_id = category.id left outer join hotel_liked on hotel.id = hotel_liked.hotel_id where ($likeSearch)  $categoryCondition  $statusCondition HAVING distance < '$miles'  ORDER BY distance ASC"
                 . "");
-//        return $command->getRawSql();
-        return $result = $command->queryAll();
+        $result = $command->queryAll();
+//        if (!empty($user_id)) {
+            $likedHotels = array_values(ArrayHelper::map(\api\modules\v1\models\HotelLiked::find()->where(['user_id' => $user_id])->all(), 'hotel_id', 'hotel_id'));
+            foreach ($result as $key => $singleResult) {
+                $result[$key]['is_liked'] = false;
+                foreach ($singleResult as $k => $item) {
+                    if ($k == 'id' && in_array($item, $likedHotels)) {
+                        $result[$key]['is_liked'] = true;
+                    }
+                }
+            }
+//        }
+        return array_unique($result, SORT_REGULAR);
     }
 
     public function actionDetail($id) {
@@ -113,23 +126,30 @@ AS distance FROM hotel left join category on category_id = category.id where ($l
 
     public function actionLikeHotel() {
         $hotel_id = Yii::$app->request->post('hotel_id');
+        $user_id = Yii::$app->request->post('user_id');
         if (!Hotel::find()->where(['id' => $hotel_id])->count()) {
             $this->commonError('Invalid hotel id');
         }
-        $alreadyExist = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => Yii::$app->user->identity->id, 'hotel_id' => $hotel_id])->one();
+        $user = \api\modules\v1\models\User::find()->where(['id' => $user_id])->one();
+        if (!$user) {
+            $this->commonError('Invalid');
+        }
+        $alreadyExist = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => $user_id, 'hotel_id' => $hotel_id])->one();
         if ($alreadyExist) {
             $this->setMessage('UnLiked');
             return $alreadyExist->delete() ? TRUE : FALSE;
         }
         $hotelLiked = new \api\modules\v1\models\HotelLiked();
-        $hotelLiked->user_id = Yii::$app->user->identity->id;
+        $hotelLiked->user_id = $user_id;
         $hotelLiked->hotel_id = $hotel_id;
         $this->setMessage('Liked');
         return $hotelLiked->save();
     }
 
     public function actionLikedHotels() {
-        $hotelLiked = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+        $user_id = Yii::$app->request->get('user_id');
+//        $user  = \api\modules\v1\models\User::find()->where(['id'=>$user_id])->one();
+        $hotelLiked = \api\modules\v1\models\HotelLiked::find()->where(['user_id' => $user_id])->all();
         return $hotelLiked;
     }
 

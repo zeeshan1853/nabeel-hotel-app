@@ -2,8 +2,6 @@
 
 namespace api\components;
 
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\Controller;
@@ -33,6 +31,8 @@ class CController extends Controller {
                 'hotel/detail',
                 'hotel/create',
                 'hotel/categories',
+                'hotel/liked-hotels',
+                'hotel/like-hotel',
             ],
         ];
         return $behaviors;
@@ -85,7 +85,6 @@ class CController extends Controller {
     protected function paramMissing($param = null) {
         throw new ApiException('Required param missing ' . $param, 460);
     }
-    
 
     /**
      * @throws UnauthorizedHttpException
@@ -93,9 +92,8 @@ class CController extends Controller {
     protected function unauthorizedAccess() {
         throw new UnauthorizedHttpException('Your request was made with invalid credentials.');
     }
-    
-    protected function invalidLogin()
-    {
+
+    protected function invalidLogin() {
         throw new ApiException('Invalid username/password supplied', 400);
     }
 
