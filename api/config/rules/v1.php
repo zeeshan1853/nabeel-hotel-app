@@ -14,9 +14,10 @@ return [
             'GET test' => 'test',
             'POST register' => 'register',
             'POST login' => 'login',
-            'GET forget-password' => 'forget-password',
+            'POST forget-password' => 'forget-password',
             'GET forget' => 'forget',
-            'GET ishtehar' => 'ishtehar',
+            'POST reset-password' => 'reset-password',
+            'GET ishtehar' => 'ishtehar'
         ],
     ],
         [
