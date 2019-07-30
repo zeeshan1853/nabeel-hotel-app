@@ -61,7 +61,6 @@ class UserController extends CController {
     }
 
     public function actionForgetPassword() {
-
         $required_params = ['email'];
         $request = Yii::$app->getRequest()->post();
         $this->checkRequiredParams($required_params, $request);
@@ -72,10 +71,12 @@ class UserController extends CController {
         if (!$model->validate()) {
             return $model;
         }
+
         if ($model->sendEmail()) {
             $this->setMessage('Password sent successfully at your email address.');
             return true;
         }
+        $this->setMessage('Unable to send email at this time.');
         return false;
     }
 
@@ -92,6 +93,7 @@ class UserController extends CController {
             return true;
         }
         $this->setMessage('Unable to find this reset token.');
+        $this->setStatus('104');
         return FALSE;
     }
 
