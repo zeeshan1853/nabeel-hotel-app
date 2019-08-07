@@ -33,5 +33,12 @@ return [
             'POST like-hotel' => 'like-hotel',
         ],
     ],
+        [
+        'class' => CUrlRule::class,
+        'controller' => 'v1/site',
+        'extraPatterns' => [
+            'POST contact' => 'index'
+        ]
+    ]
 ];
 

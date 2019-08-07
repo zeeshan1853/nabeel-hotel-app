@@ -34,6 +34,7 @@ class CController extends Controller {
                 'hotel/categories',
                 'hotel/liked-hotels',
                 'hotel/like-hotel',
+                'site/index',
             ],
         ];
         return $behaviors;
