@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\HotelSearch;
 use common\models\Hotel;
+use common\services\StorageService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -46,7 +47,7 @@ class HotelController extends Controller {
     public function actionIndex() {
         $searchModel = new HotelSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize=100;
+        $dataProvider->pagination->pageSize = 100;
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -79,9 +80,10 @@ class HotelController extends Controller {
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
             if ($imageFile = UploadedFile::getInstance($model, 'img')) {
-                $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
+                $nameOfImage = $imageFile->baseName . "-" . strtotime("now") . '.' . $imageFile->extension;
                 $imageFile->saveAs('uploads/' . $nameOfImage);
                 $model->img = $nameOfImage;
+                StorageService::uploadToS3('uploads/' . $nameOfImage, StorageService::$S3_IMAGES_PATH . $nameOfImage);
             }
             if ($model->save()) {
                 return $this->redirect('index');
@@ -114,10 +116,9 @@ class HotelController extends Controller {
                     $nameOfImage = $imageFile->baseName . '.' . $imageFile->extension;
                     $imageFile->saveAs('uploads/' . $nameOfImage);
                     $img = $nameOfImage;
-                } else {
-                    if (empty($model->image_name)) {
-                        $img = NULL;
-                    }
+                    StorageService::uploadToS3('uploads/' . $nameOfImage, StorageService::$S3_IMAGES_PATH . $nameOfImage);
+                } else if (empty($model->image_name)) {
+                    $img = NULL;
                 }
                 $model->img = $img;
                 $videoName = "video_" . rand() . '_';
@@ -126,6 +127,7 @@ class HotelController extends Controller {
                     if (!$videoFile->saveAs('uploads/videos/' . $videoFullName)) {
                         
                     }
+                    StorageService::uploadToS3('uploads/videos' . $videoFullName, StorageService::$S3_VIDEO_PATH . $videoFullName);
                     $model->video_hotel = $videoFullName;
                 } else {
                     if (empty($model->video_string)) {
