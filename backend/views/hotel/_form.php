@@ -29,7 +29,9 @@ use yii\widgets\ActiveForm;
                 <source src="../uploads/videos/<?= $model->video_hotel ?>" type="video/mp4">
             </video>
         </div>-->
-    <?= $form->field($model, 'video_hotel')->fileInput(['style' => ['display' => 'none']])->label('Upload video', ['class' => 'labelfile glyphicon glyphicon-upload']) ?>
+    <?php if(!$model->isNewRecord ) {
+        echo $form->field($model, 'video_hotel')->fileInput(['style' => ['display' => 'none']])->label('Upload video', ['class' => 'labelfile glyphicon glyphicon-upload']);
+    }?>
 
     <?php $model->video_string = $model->video_hotel ?>
     <?php $model->image_name = $model->img ?>
