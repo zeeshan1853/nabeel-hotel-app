@@ -18,7 +18,7 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "lcobucci/jwt": "^4.0@alpha",
+        "lcobucci/jwt": "^3.2",
         "naffiq/yii2-mailin": "dev-master",
         "silverback/yii2-sendinblue": "dev-master",
         "frostealth/yii2-aws-s3": "~2.0"
